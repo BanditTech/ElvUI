@@ -191,6 +191,13 @@ P.bags = {
 	questIcon = true,
 	professionBagColors = true,
 	questItemColors = true,
+	recipeOverlayUnlearnable = true,
+	recipeOverlayUnlearnableColor = {r = 1, g = 0, b = 0, a = 0.7},
+	recipeOverlayUnknown = true,
+	recipeOverlayUnknownColor = {r = 1, g = 0.8, b = 0, a = 0.7},
+	recipeOverlayKnown = true,
+	recipeOverlayKnownColor = {r = 0, g = 1, b = 0, a = 0.7},
+	recipeProfessionText = true,
 	colors = {
 		profession = {
 			quiver = {r = 1, g = 0.69, b = 0.41},

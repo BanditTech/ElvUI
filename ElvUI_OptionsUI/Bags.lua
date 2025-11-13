@@ -286,6 +286,92 @@ E.Options.args.bags = {
 							values = C.Values.FontFlags
 						}
 					}
+				},
+				recipeInfo = {
+					order = 21,
+					type = "group",
+					name = L["Recipe Information"],
+					guiInline = true,
+					disabled = function() return not E.Bags.Initialized end,
+					get = function(info) return E.db.bags[info[#info]] end,
+					set = function(info, value) E.db.bags[info[#info]] = value B:UpdateAllBagSlots() end,
+					args = {
+						recipeProfessionText = {
+							order = 1,
+							type = "toggle",
+							name = L["Show Profession Text"],
+							desc = L["Display abbreviated profession name on recipe items (e.g., BS for Blacksmithing)."],
+						},
+						recipeOverlayUnlearnable = {
+							order = 2,
+							type = "toggle",
+							name = L["Unlearnable Recipe Overlay"],
+							desc = L["Show colored overlay for recipes that cannot be learned (wrong profession, level requirement not met, etc.)."],
+						},
+						recipeOverlayUnlearnableColor = {
+							order = 3,
+							type = "color",
+							name = L["Unlearnable Color"],
+							hasAlpha = true,
+							disabled = function() return not E.db.bags.recipeOverlayUnlearnable end,
+							get = function(info)
+								local t = E.db.bags.recipeOverlayUnlearnableColor
+								local d = P.bags.recipeOverlayUnlearnableColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.bags.recipeOverlayUnlearnableColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								B:UpdateAllBagSlots()
+							end
+						},
+						recipeOverlayUnknown = {
+							order = 4,
+							type = "toggle",
+							name = L["Unknown Recipe Overlay"],
+							desc = L["Show colored overlay for recipes that are not yet known and can be learned."],
+						},
+						recipeOverlayUnknownColor = {
+							order = 5,
+							type = "color",
+							name = L["Unknown Color"],
+							hasAlpha = true,
+							disabled = function() return not E.db.bags.recipeOverlayUnknown end,
+							get = function(info)
+								local t = E.db.bags.recipeOverlayUnknownColor
+								local d = P.bags.recipeOverlayUnknownColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.bags.recipeOverlayUnknownColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								B:UpdateAllBagSlots()
+							end
+						},
+						recipeOverlayKnown = {
+							order = 6,
+							type = "toggle",
+							name = L["Known Recipe Overlay"],
+							desc = L["Show colored overlay for recipes that are already known."],
+						},
+						recipeOverlayKnownColor = {
+							order = 7,
+							type = "color",
+							name = L["Known Color"],
+							hasAlpha = true,
+							disabled = function() return not E.db.bags.recipeOverlayKnown end,
+							get = function(info)
+								local t = E.db.bags.recipeOverlayKnownColor
+								local d = P.bags.recipeOverlayKnownColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.bags.recipeOverlayKnownColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								B:UpdateAllBagSlots()
+							end
+						}
+					}
 				}
 			}
 		},

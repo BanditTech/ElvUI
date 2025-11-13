@@ -70,6 +70,77 @@ local SEARCH = SEARCH
 
 local SEARCH_STRING = ""
 
+-- Profession abbreviations for recipe items
+B.ProfessionAbbreviations = {
+	["Alchemy"] = "ALCH",
+	["Blacksmithing"] = "BS",
+	["Enchanting"] = "ENCH",
+	["Engineering"] = "ENG",
+	["Inscription"] = "INSC",
+	["Jewelcrafting"] = "JC",
+	["Leatherworking"] = "LW",
+	["Tailoring"] = "TLR",
+	["Cooking"] = "COOK",
+	["First Aid"] = "AID",
+	["Mining"] = "MINE",
+	["Herbalism"] = "HERB",
+	["Skinning"] = "SKIN",
+	["Fishing"] = "FISH",
+}
+
+-- Detect whether an item link (or container/inventory reference) is a recipe and gather simple metadata.
+-- Returns: isRecipe (bool), professionName (string or nil), known (bool), canLearn (bool or nil)
+function B:GetRecipeInfo(source, link)
+	if not link then return nil end
+
+	local ScanTooltip = E.ScanTooltip
+	if not ScanTooltip then return nil end
+
+	local isRecipe = false
+	local recipeProfession = nil
+	local recipeKnown = false
+	local recipeCanLearn = true
+
+	-- Get item info where available (we'll still rely on tooltip scanning primarily)
+	local name, _, _, _, _, itemType, itemSubType = GetItemInfo(link)
+	if itemType ~= "Recipe" then return nil end
+
+	-- Use tooltip scanning for reliable detection and localized strings
+	ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+	ScanTooltip:SetHyperlink(link)
+	ScanTooltip:Show()
+
+	-- Scan tooltip lines (both left and right) for known recipe indicators
+	for i = 1, 5 do
+		local left = _G["ElvUI_ScanTooltipTextLeft" .. i]
+
+		if left then
+			local text = left:GetText()
+			if text and text ~= "" then
+				if text == ITEM_SPELL_KNOWN then
+					recipeKnown = true
+				end
+				if itemType == "Recipe" and text:find(ITEM_SPELL_TRIGGER_ONUSE, 1, true) == 1 then
+					isRecipe = true
+				end
+				local r, g, b = left:GetTextColor()
+				if r and g and b and r > 0.9 and g < 0.2 and b < 0.2 then
+					recipeCanLearn = false
+				end
+			end
+		end
+	end
+
+	ScanTooltip:Hide()
+
+	if itemSubType and B.ProfessionAbbreviations[itemSubType] then
+		recipeProfession = itemSubType
+	end
+
+	return isRecipe, recipeProfession, recipeKnown, recipeCanLearn
+end
+
+
 function B:GetContainerFrame(arg)
 	if type(arg) == "boolean" and arg == true then
 		return B.BankFrame
@@ -184,7 +255,7 @@ function B:SetSearch(query)
 				local button = bagFrame.Bags[bagID][slotID]
 				local success, result = pcall(Search.Matches, Search, link, query)
 				if empty or (success and result) then
-					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate)
+					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate or button.recipeDesaturate)
 					button.searchOverlay:Hide()
 					button:SetAlpha(1)
 				else
@@ -237,7 +308,7 @@ function B:SetGuildBankSearch(query)
 				local success, result = pcall(Search.Matches, Search, link, query)
 
 				if empty or (success and result) then
-					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate)
+					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate or button.recipeDesaturate)
 					button:SetAlpha(1)
 				else
 					SetItemButtonDesaturated(button, 1)
@@ -303,13 +374,18 @@ end
 function B:UpdateAllBagSlots()
 	if not E.private.bags.enable then return end
 
-	for _, bagFrame in pairs(B.BagFrames) do
-		B:UpdateAllSlots(bagFrame)
-	end
+	-- Throttle rapid calls: if an update is already scheduled, skip scheduling another
+	if B._updateAllBagSlotsPending then return end
+	B._updateAllBagSlotsPending = true
+
+	E:Delay(0.1, function()
+		B._updateAllBagSlotsPending = nil
+		for _, bagFrame in pairs(B.BagFrames) do
+			B:UpdateAllSlots(bagFrame)
+		end
+	end)
 end
 
--- Extracted helper: handle appearance & meta for an item link on a slot.
--- This can be reused by other modules (e.g., GuildBank) by passing the slot and item link.
 function B:UpdateSlotAppearance(slot, clink)
 	if not (slot and clink) then return end
 
@@ -323,7 +399,10 @@ function B:UpdateSlotAppearance(slot, clink)
 	end
 
 	-- Bind type (BoE / BoU)
-	if B.db.showBindType and (slot.rarity and slot.rarity > 1) then
+	-- Recipe detection (hyperlink-based) — used to skip BoE/BoU and to show recipe overlays
+	local isRecipe, recipeProfession, recipeKnown, recipeCanLearn = B:GetRecipeInfo("hyperlink", clink)
+
+	if not isRecipe and B.db.showBindType and (slot.rarity and slot.rarity > 1) then
 		local bindTypeLines = GetCVarBool("colorblindmode") and 8 or 7
 		local BoE, BoU
 		for i = 2, bindTypeLines do
@@ -390,9 +469,41 @@ function B:UpdateSlotAppearance(slot, clink)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		slot.ignoreBorderColors = nil
 	end
+
+	-- Recipe overlay handling
+	if isRecipe then
+		local color = { r = 0, g = 0, b = 0, a = 0 }
+		local desaturate = false
+		if B.db.recipeProfessionText and recipeProfession then
+			local abbr = B.ProfessionAbbreviations[recipeProfession]
+			if abbr then
+				slot.recipeText:SetText(abbr)
+				slot.recipeText:SetVertexColor(r or 1, g or 1, b or 1)
+			end
+		end
+		if recipeKnown and B.db.recipeOverlayKnown then -- Known
+			color = B.db.recipeOverlayKnownColor
+			desaturate = true
+		elseif not recipeCanLearn and B.db.recipeOverlayUnlearnable then -- Unlearnable
+			color = B.db.recipeOverlayUnlearnableColor
+			desaturate = true
+		elseif recipeCanLearn and not recipeKnown and B.db.recipeOverlayUnknown then -- Unknown
+			color = B.db.recipeOverlayUnknownColor
+			desaturate = true
+		end
+		if slot.recipeOverlay then
+			slot.recipeOverlay:SetBackdropColor(color.r, color.g, color.b, color.a)
+		end
+		slot.recipeOverlay:Show()
+		slot.recipeDesaturate = desaturate
+		if B.db.qualityColors and (slot.rarity and slot.rarity > 1) then
+			slot.recipeOverlay:SetBackdropBorderColor(r, g, b)
+		else
+			slot.recipeOverlay:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end	
+	end
 end
 
--- Ensure a slot (button/frame) has the small UI elements bags expect so appearance code can reuse them.
 function B:CreateSlotAppearanceElements(slot)
 	if not slot then return end
 
@@ -457,9 +568,23 @@ function B:CreateSlotAppearanceElements(slot)
 		searchOverlay:Hide()
 		slot.searchOverlay = searchOverlay
 	end
+
+	-- Recipe overlay/frame + profession text
+	if not slot.recipeOverlay then
+		local overlayFrame = CreateFrame("Frame", nil, slot)
+		overlayFrame:SetAllPoints(slot)
+		overlayFrame:SetTemplate(nil, true)
+		overlayFrame:SetBackdropColor(0, 0, 0, 0)
+		overlayFrame:SetFrameLevel((slot:GetFrameLevel() or 0) + 5)
+
+		slot.recipeText = overlayFrame:CreateFontString(nil, "OVERLAY")
+		slot.recipeText:Point("TOP", 0, -2)
+		slot.recipeText:FontTemplate(E.Libs.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+
+		slot.recipeOverlay = overlayFrame
+	end
 end
 
--- Clear any dynamic appearance info from a slot so it doesn't retain data from a previous item/tab
 function B:ClearSlotAppearance(slot)
 	if not slot then return end
 
@@ -475,6 +600,11 @@ function B:ClearSlotAppearance(slot)
 	-- Clear texts
 	if slot.itemLevel then slot.itemLevel:SetText("") end
 	if slot.bindType then slot.bindType:SetText("") end
+
+	-- Clear recipe overlay/text/desaturate flag
+	if slot.recipeText then slot.recipeText:SetText("") end
+	if slot.recipeOverlay then slot.recipeOverlay:Hide() end
+	slot.recipeDesaturate = nil
 
 	-- Reset border to default
 	if slot.SetBackdropBorderColor then
@@ -538,7 +668,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
-	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
+	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate or slot.recipeDesaturate)
 
 	if GameTooltip:GetOwner() == slot and not slot.hasItem then
 		GameTooltip_Hide()
