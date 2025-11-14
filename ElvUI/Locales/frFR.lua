@@ -2,6 +2,22 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "frFR")
 
+L["Alchemy"] = "Alchimie"
+L["Blacksmithing"] = "Forge"
+L["Cooking"] = "Cuisine"
+L["Enchanting"] = "Enchantement"
+L["Engineering"] = "Ingénierie"
+L["First Aid"] = "Secourisme"
+L["Fishing"] = "Pêche"
+L["Herbalism"] = "Herboristerie"
+L["Inscription"] = "Calligraphie"
+L["Jewelcrafting"] = "Joaillerie"
+L["Leatherworking"] = "Travail du cuir"
+L["Mining"] = "Minage"
+L["Recipe"] = "Recette"
+L["Skinning"] = "Dépeçage"
+L["Tailoring"] = "Couture"
+
 L[" |cff00ff00bound to |r"] = "|cff00ff00assigné à |r"
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = "% du (des) cadre(s) à un point d'ancrage contradictoire(s), merci de changer le point d'ancrage des améliorations ou des affaiblissements de sorte qu'ils ne soient pas attachés les uns aux autres. Forcer les affaiblissements à être attachés au cadre d'unité principale jusqu'à ce qu'ils soient fixés."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s tente de partager ses filtres avec vous. Voulez-vous accepter la demande ?"

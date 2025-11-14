@@ -2,6 +2,22 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "koKR")
 
+L["Alchemy"] = "연금술"
+L["Blacksmithing"] = "대장기술"
+L["Cooking"] = "요리"
+L["Enchanting"] = "마법부여"
+L["Engineering"] = "기계공학"
+L["First Aid"] = "응급치료"
+L["Fishing"] = "낚시"
+L["Herbalism"] = "약초채집"
+L["Inscription"] = "주문각인"
+L["Jewelcrafting"] = "보석세공"
+L["Leatherworking"] = "가죽세공"
+L["Mining"] = "채광"
+L["Recipe"] = "제작법"
+L["Skinning"] = "무두질"
+L["Tailoring"] = "재봉술"
+
 L[" |cff00ff00bound to |r"] = " 키로 다음의 행동을 실행합니다: |cff2eb7e4"
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = "%s 의 위치 기준 프레임이 상충되고 있습니다. 서로가 서로의 위치를 참조하지 않게 버프나 디버프 중 하나의 위치를 바꿔주세요. 수정되기 전까지 강제로 유닛프레임이 기준으로 됩니다. "
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 유저가 필터설정을 전송하려 합니다. 받으시겠습니까?"

@@ -2,6 +2,22 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+L["Alchemy"] = "炼金术"
+L["Blacksmithing"] = "锻造"
+L["Cooking"] = "烹饪"
+L["Enchanting"] = "附魔"
+L["Engineering"] = "工程学"
+L["First Aid"] = "急救"
+L["Fishing"] = "钓鱼"
+L["Herbalism"] = "采药"
+L["Inscription"] = "铭文"
+L["Jewelcrafting"] = "珠宝加工"
+L["Leatherworking"] = "制皮"
+L["Mining"] = "采矿"
+L["Recipe"] = "配方"
+L["Skinning"] = "剥皮"
+L["Tailoring"] = "裁缝"
+
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = "%s 个框架锚点冲突，请移动buff或者debuff锚点让他们彼此不依附。暂时强制debuff依附到主框架。"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 试图与你分享过滤器配置. 你是否接受?"

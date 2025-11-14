@@ -1,6 +1,22 @@
 -- Traditional Chinese localization file for zhTW.
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
+-- Profession Localization
+L["Alchemy"] = "鍊金術"
+L["Blacksmithing"] = "鍛造"
+L["Cooking"] = "烹飪"
+L["Enchanting"] = "附魔"
+L["Engineering"] = "工程學"
+L["First Aid"] = "急救"
+L["Fishing"] = "釣魚"
+L["Herbalism"] = "採藥"
+L["Inscription"] = "銘文"
+L["Jewelcrafting"] = "珠寶加工"
+L["Leatherworking"] = "製皮"
+L["Mining"] = "採礦"
+L["Recipe"] = "配方"
+L["Skinning"] = "剝皮"
+L["Tailoring"] = "裁縫"
 
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = " %s 個框架錨點衝突, 請移動buff或者debuff錨點讓他們彼此不依附. 暫時強制debuff依附到主框架."

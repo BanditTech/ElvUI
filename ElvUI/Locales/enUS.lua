@@ -1,6 +1,22 @@
 -- English localization file for enUS and enGB.
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
+-- Profession Localization
+L["Alchemy"] = true
+L["Blacksmithing"] = true
+L["Cooking"] = true
+L["Enchanting"] = true
+L["Engineering"] = true
+L["First Aid"] = true
+L["Fishing"] = true
+L["Herbalism"] = true
+L["Inscription"] = true
+L["Jewelcrafting"] = true
+L["Leatherworking"] = true
+L["Mining"] = true
+L["Recipe"] = true
+L["Skinning"] = true
+L["Tailoring"] = true
 
 L[" |cff00ff00bound to |r"] = true
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = true
