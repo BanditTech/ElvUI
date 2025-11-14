@@ -496,7 +496,7 @@ E.Options.args.bags = {
 						inscription = {
 							order = 7,
 							type = "color",
-							name = L["INSCRIPTION"],
+							name = L["Inscription"],
 							disabled = function() return not E.db.bags.professionBagColors end
 						},
 						herbs = {

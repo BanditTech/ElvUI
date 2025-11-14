@@ -72,20 +72,20 @@ local SEARCH_STRING = ""
 
 -- Profession abbreviations for recipe items
 B.ProfessionAbbreviations = {
-	["Alchemy"] = "ALCH",
-	["Blacksmithing"] = "BS",
-	["Enchanting"] = "ENCH",
-	["Engineering"] = "ENG",
-	["Inscription"] = "INSC",
-	["Jewelcrafting"] = "JC",
-	["Leatherworking"] = "LW",
-	["Tailoring"] = "TLR",
-	["Cooking"] = "COOK",
-	["First Aid"] = "AID",
-	["Mining"] = "MINE",
-	["Herbalism"] = "HERB",
-	["Skinning"] = "SKIN",
-	["Fishing"] = "FISH",
+	[L["Alchemy"]] = "ALCH",
+	[L["Blacksmithing"]] = "BS",
+	[L["Enchanting"]] = "ENCH",
+	[L["Engineering"]] = "ENG",
+	[L["Inscription"]] = "INSC",
+	[L["Jewelcrafting"]] = "JC",
+	[L["Leatherworking"]] = "LW",
+	[L["Tailoring"]] = "TLR",
+	[L["Cooking"]] = "COOK",
+	[L["First Aid"]] = "AID",
+	[L["Mining"]] = "MINE",
+	[L["Herbalism"]] = "HERB",
+	[L["Skinning"]] = "SKIN",
+	[L["Fishing"]] = "FISH",
 }
 
 -- Detect whether an item link (or container/inventory reference) is a recipe and gather simple metadata.
@@ -120,7 +120,7 @@ function B:GetRecipeInfo(source, link)
 				if text == ITEM_SPELL_KNOWN then
 					recipeKnown = true
 				end
-				if itemType == L["Recipe"] and text:find(ITEM_SPELL_TRIGGER_ONUSE, 1, true) == 1 then
+				if text:find(ITEM_SPELL_TRIGGER_ONUSE, 1, true) == 1 then
 					isRecipe = true
 				end
 				local r, g, b = left:GetTextColor()
