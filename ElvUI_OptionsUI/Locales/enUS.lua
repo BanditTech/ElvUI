@@ -828,6 +828,7 @@ L["Reaction Type"] = true
 L["Reactions"] = true
 L["Ready Check Icon"] = true
 L["Realm Time"] = true
+L["Recipe"] = true
 L["Recipe Information"] = true
 L["Remaining / Max"] = true
 L["Remaining Time"] = true

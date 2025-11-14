@@ -823,6 +823,7 @@ L["Reaction Castbars"] = true
 L["Reaction Colors"] = true
 L["Reaction Type"] = true
 L["Reactions"] = "Reacciones"
+L["Recipe"] = "Receta"
 L["Recipe Information"] = "Información de la receta"
 L["Ready Check Icon"] = true
 L["Realm Time"] = true

@@ -820,6 +820,7 @@ L["Reaction Castbars"] = "聲望施法條"
 L["Reaction Colors"] = "聲望顏色"
 L["Reaction Type"] = "聲望類型"
 L["Reactions"] = "陣營聲望"
+L["Recipe"] = "配方"
 L["Ready Check Icon"] = "準備確認圖標"
 L["Realm Time"] = true
 L["Recipe Information"] = "配方資訊"

@@ -824,6 +824,7 @@ L["Reaction Castbars"] = "Réaction des barres d'incantation"
 L["Reaction Colors"] = true
 L["Reaction Type"] = true
 L["Reactions"] = "Réactions"
+L["Recipe"] = "Recette"
 L["Recipe Information"] = "Informations sur la recette"
 L["Ready Check Icon"] = "Icône d'appel"
 L["Realm Time"] = true

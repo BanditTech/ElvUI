@@ -820,6 +820,7 @@ L["Reaction Castbars"] = "Полоса заклинаний по реакции"
 L["Reaction Colors"] = "Цвета отношений"
 L["Reaction Type"] = "Тип реакции"
 L["Reactions"] = "Отношение"
+L["Recipe"] = "Рецепт"
 L["Recipe Information"] = "Информация о рецепте"
 L["Ready Check Icon"] = "Иконка готовности"
 L["Realm Time"] = true

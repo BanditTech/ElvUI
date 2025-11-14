@@ -819,6 +819,7 @@ L["Reaction Castbars"] = "Reaktion Zauberleiste"
 L["Reaction Colors"] = "Reaktionsfarbe"
 L["Reaction Type"] = "Reaktion Typ"
 L["Reactions"] = "Reaktionen"
+L["Recipe"] = "Rezept"
 L["Recipe Information"] = "Rezeptinformationen"
 L["Ready Check Icon"] = "Bereitschaftssymbol"
 L["Realm Time"] = true

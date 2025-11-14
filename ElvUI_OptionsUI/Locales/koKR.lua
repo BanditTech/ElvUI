@@ -823,6 +823,7 @@ L["Reaction Castbars"] = "관계 시전바"
 L["Reaction Colors"] = "관계 색상"
 L["Reaction Type"] = "관계 형태"
 L["Reactions"] = "관계"
+L["Recipe"] = "제작법"
 L["Recipe Information"] = "제작법 정보"
 L["Ready Check Icon"] = "전투준비 아이콘"
 L["Realm Time"] = true

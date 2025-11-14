@@ -101,16 +101,16 @@ function B:GetRecipeInfo(source, link)
 	local recipeKnown = false
 	local recipeCanLearn = true
 
-	-- Get item info where available (we'll still rely on tooltip scanning primarily)
-	local name, _, _, _, _, itemType, itemSubType = GetItemInfo(link)
-	if itemType ~= "Recipe" then return nil end
+	-- Collect relevant item info
+	local _, _, _, _, _, itemType, itemSubType = GetItemInfo(link)
+	if itemType ~= L["Recipe"] then return nil end
 
 	-- Use tooltip scanning for reliable detection and localized strings
 	ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	ScanTooltip:SetHyperlink(link)
 	ScanTooltip:Show()
 
-	-- Scan tooltip lines (both left and right) for known recipe indicators
+	-- Scan tooltip lines for known recipe indicators
 	for i = 1, 5 do
 		local left = _G["ElvUI_ScanTooltipTextLeft" .. i]
 
@@ -120,7 +120,7 @@ function B:GetRecipeInfo(source, link)
 				if text == ITEM_SPELL_KNOWN then
 					recipeKnown = true
 				end
-				if itemType == "Recipe" and text:find(ITEM_SPELL_TRIGGER_ONUSE, 1, true) == 1 then
+				if itemType == L["Recipe"] and text:find(ITEM_SPELL_TRIGGER_ONUSE, 1, true) == 1 then
 					isRecipe = true
 				end
 				local r, g, b = left:GetTextColor()
